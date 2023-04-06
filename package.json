@@ -1,0 +1,36 @@
+{
+  "name": "bakerybackend",
+  "version": "1.0.0",
+  "description": "Repository for Backend of Eiteck activity",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "mocha tests/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nogyboy/panaderiabackend.git"
+  },
+  "keywords": [
+    "Node"
+  ],
+  "author": "Christian Guaman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nogyboy/panaderiabackend/issues"
+  },
+  "homepage": "https://github.com/Nogyboy/panaderiabackend#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "postgres":"^3.3.4",
+    "multer":"*"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  }
+}
