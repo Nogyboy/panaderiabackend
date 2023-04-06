@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     address VARCHAR(200) NOT NULL,
     phone VARCHAR(15),
     payment VARCHAR(15) NOT NULL,
+    total NUMERIC(2),
     status VARCHAR(15) NOT NULL
     
 );

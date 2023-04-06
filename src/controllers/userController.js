@@ -2,6 +2,8 @@ import { queryCreateUser } from "../query/usersQuery.js";
 
 const createUser = async (request, response) => {
   try {
+    const user_type = ["Administrador", "Cliente", "Delivery"];
+  if (user_type.includes(request.body.type)) {
     const user = await queryCreateUser({
       username: request.body.username,
       name: request.body.name,
@@ -10,6 +12,9 @@ const createUser = async (request, response) => {
       type: request.body.type,
     });
     response.status(201).json(user);
+  } else{
+    response.status(400).json({message: "User type can be Administrador, Cliente and Delivery "});
+  }
   } catch (error) {
     response.status(500).json({ message: error.message });
   }

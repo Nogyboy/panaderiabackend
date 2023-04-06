@@ -5,7 +5,7 @@ import sql from "./src/config/db.js";
 
 import breadboxRoutes from "./src/routes/breadboxRoutes.js";
 import userRouter from "./src/routes/userRoutes.js"
-
+import orderRoutes from "./src/routes/orderRoutes.js"
 
 const app = express();
 const port = 3000;
@@ -16,6 +16,7 @@ app.use(cors());
 
 app.use('/api/breadbox', breadboxRoutes);
 app.use('/api/user', userRouter);
+app.use('/api/order', orderRoutes);
 
 
 app.get('/', (request, response) => {
