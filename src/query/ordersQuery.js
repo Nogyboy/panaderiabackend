@@ -13,7 +13,7 @@ const queryCreateOrder = async ({ user_id, name, address, phone, payment }) => {
   return order;
 }
 
-const queryDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
+const queryCreateDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
 
   const order = await sql`
   INSERT INTO order_details(
@@ -47,6 +47,16 @@ const queryDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
   return order;
 }
 
+const queryOrderDetails = async ({ order_id }) => {
+  // Get all Bread Boxes records
+  const orders = await sql`
+  SELECT order_detail_id, order_id, bread_box_id, quantity
+	FROM order_details
+  WHERE order_id = ${order_id}
+    `
+  return orders;
+};
+
 const queryAllOrders = async () => {
   // Get all Bread Boxes records
   const orders = await sql`
@@ -68,5 +78,4 @@ const queryAllGeneratedOrders = async () => {
 };
 
 
-
-export { queryCreateOrder, queryDetailOrder, queryAllOrders, queryAllGeneratedOrders }
+export { queryCreateOrder, queryCreateDetailOrder, queryAllOrders, queryAllGeneratedOrders, queryOrderDetails }

@@ -1,5 +1,4 @@
-import e from "express";
-import { queryCreateOrder, queryDetailOrder, queryAllOrders, queryAllGeneratedOrders } from "../query/ordersQuery.js";
+import { queryCreateOrder, queryCreateDetailOrder, queryAllOrders, queryAllGeneratedOrders, queryOrderDetails } from "../query/ordersQuery.js";
 
 const createOrder = async (request, response) => {
   try {
@@ -25,7 +24,7 @@ const createOrder = async (request, response) => {
 
 const createOrderDetail = async (request, response) => {
   try {
-    const detail = await queryDetailOrder({
+    const detail = await queryCreateDetailOrder({
       order_id: request.body.order_id,
       bread_box_id: request.body.bread_box_id,
       quantity: request.body.quantity
@@ -61,5 +60,21 @@ const getAllOrders = async (request, response) => {
   }
 };
 
+const getDetailsOrder = async (request, response) => {
+  try {
 
-export { createOrder, createOrderDetail, getAllOrders };
+      const details = await queryOrderDetails({
+        order_id: request.body.order_id
+      });
+      if (details.count == 0) {
+        return response.status(404).json({ message: 'Details Order not found' });
+      }
+      response.json(details);
+    
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
+};
+
+
+export { createOrder, createOrderDetail, getAllOrders, getDetailsOrder };
