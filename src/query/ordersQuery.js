@@ -1,7 +1,7 @@
 import sql from "../config/db.js";
 
 const queryCreateOrder = async ({ user_id, name, address, phone, payment }) => {
-  //Create a new order with status 'Generado'
+  //Insert a new order with status 'Generado'
   const d = new Date()
   const now_date = `${d.getFullYear()}-${d.getMonth()}-${d.getDay()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`
 
@@ -14,7 +14,7 @@ const queryCreateOrder = async ({ user_id, name, address, phone, payment }) => {
 }
 
 const queryCreateDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
-
+  // Insert a new detail's order and update the total of the according order
   const order = await sql`
   INSERT INTO order_details(
     order_id, bread_box_id, quantity)
@@ -48,7 +48,7 @@ const queryCreateDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
 }
 
 const queryOrderDetails = async ({ order_id }) => {
-  // Get all Bread Boxes records
+  // Retrieve all order details
   const orders = await sql`
   SELECT order_detail_id, order_id, bread_box_id, quantity
 	FROM order_details
@@ -58,7 +58,7 @@ const queryOrderDetails = async ({ order_id }) => {
 };
 
 const queryAllOrders = async () => {
-  // Get all Bread Boxes records
+  // Retrieve all orders
   const orders = await sql`
     SELECT order_id, user_id, name, date, address, phone, payment, total, status
     FROM orders
@@ -68,7 +68,7 @@ const queryAllOrders = async () => {
 
 
 const queryAllGeneratedOrders = async () => {
-  // Get all Bread Boxes records
+  // Retrieve all orders with "Generado" status
   const orders = await sql`
     SELECT order_id, user_id, name, date, address, phone, payment, total, status
     FROM orders

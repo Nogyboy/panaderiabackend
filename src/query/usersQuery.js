@@ -1,4 +1,3 @@
-import { response } from "express";
 import sql from "../config/db.js";
 
 const queryCreateUser = async ({ username, name, last_name, password, type }) => {
@@ -12,4 +11,24 @@ const queryCreateUser = async ({ username, name, last_name, password, type }) =>
     return user;
 }
 
-export { queryCreateUser }
+const queryFindUser = async( { username }) => {
+
+  const user = await sql`
+    SELECT user_id, username, type
+    FROM users
+    WHERE username = ${username}
+  `
+  return user;
+}
+
+const queryPassword = async( { username }) => {
+
+  const user = await sql`
+    SELECT password
+    FROM users
+    WHERE username = ${username}
+  `
+  return user;
+}
+
+export { queryCreateUser, queryFindUser, queryPassword }

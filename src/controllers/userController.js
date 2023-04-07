@@ -1,66 +1,52 @@
-import { queryCreateUser } from "../query/usersQuery.js";
+import { queryCreateUser, queryFindUser, queryPassword } from "../query/usersQuery.js";
+import createJWT from "../helpers/createJWT.js";
 
 const createUser = async (request, response) => {
+  // Create a new user only allow to "Administrador"
   try {
-    const user_type = ["Administrador", "Cliente", "Delivery"];
-  if (user_type.includes(request.body.type)) {
-    const user = await queryCreateUser({
-      username: request.body.username,
-      name: request.body.name,
-      last_name: request.body.last_name,
-      password: request.body.password,
-      type: request.body.type,
-    });
-    response.status(201).json(user);
-  } else{
-    response.status(400).json({message: "User type can be Administrador, Cliente and Delivery "});
-  }
-  } catch (error) {
-    response.status(500).json({ message: error.message });
-  }
-};
-
-
-const getAllBreadBoxes = async (request, response) => {
-  try {
-    const boxes = await queryAllBreadBoxes();
-    if (boxes.count == 0) {
-      return response.status(404).json({ message: 'Boxes not found' });
+    const user_type = await queryFindUser({ username: request.body.login_username });
+    if (user_type[0].type == "Administrador") {
+      const user_type = ["Administrador", "Cliente", "Delivery"];
+      if (user_type.includes(request.body.type)) {
+        const user = await queryCreateUser({
+          username: request.body.username,
+          name: request.body.name,
+          last_name: request.body.last_name,
+          password: request.body.password,
+          type: request.body.type,
+        });
+        response.status(201).json(user);
+      } else {
+        response.status(400).json({ message: "User type can be Administrador, Cliente and Delivery " });
+      }
+    } else {
+      return response.status(401).json({ message: 'Unauthorized' })
     }
-    response.json(boxes);
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
 };
-const createBreadImage = async (request, response) => {
+
+const authenticateUser = async (request, response) => {
+  // Authenticate for users
   try {
-    const image_bread = await queryInsertImageBreadBox({
-      filename: request.file.filename,
-      filepath: request.file.path,
-      mimetype: request.file.mimetype,
-      size: request.file.size,
-      bread_box_id: request.body.bread_box_id
-    });
-
-    response.status(201).json(image_bread);
-  } catch (error) {
-    response.status(500).json({ message: error.message });
-  }
-
-};
-
-const getBreadBoxImages = async (request, response) => {
-  try {
-    console.log(request.body.bread_box_id)
-    const images = await queryBreadBoxImages({ bread_box_id: request.body.bread_box_id });
-    if (images.count == 0) {
-      return response.status(404).json({ message: 'Boxes not found' });
+    const { username, password } = request.body;
+    const user = await queryFindUser({ username: username });
+    if (user.count == 0) {
+      return response.status(401).json({ message: 'Username not found' });
     }
-    response.json(images);
+
+    const user_password = await queryPassword({ username: username });
+    if (password != user_password[0].password) {
+      return response.status(401).json({ message: "Password doesn't match" });
+    }
+
+    const token = createJWT(user[0].username);
+    response.json({ message: 'Successful Auth', token, userId: user[0].user_id });
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
 };
 
 
-export { createUser };
+export { createUser, authenticateUser };

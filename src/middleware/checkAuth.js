@@ -1,24 +1,25 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import { queryFindUser } from '../query/usersQuery.js';
 
-const checkAuth = async (req, res, next) => {
+const checkAuth = async (request, response, next) => {
+    // Check credentials before access to the endpoint
     let token;
     if (
-        req.headers.authorization &&
-        req.headers.authorization.startsWith("Bearer")
+        request.headers.authorization &&
+        request.headers.authorization.startsWith("Bearer")
     ) {
         try {
-            token = req.headers.authorization.split(" ")[1];
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select("-password -confirmed -token -createdAt -updatedAt -__v"); 
+            token = request.headers.authorization.split(" ")[1];
+            const decoded = jwt.verify(token, "secretWord");
+            request.user = await queryFindUser({ username: decoded.id }); 
             return next();
         } catch (error) {
-            return res.status(404).json({ message: "There was an error" });
+            return response.status(404).json({ message: "Invalid token" });
         }   
     }
     if (!token) {
         const error = new Error("Invalid token");
-        return res.status(401).json({ message: error.message });
+        return response.status(401).json({ message: error.message });
     }
     next();
 };

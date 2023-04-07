@@ -1,4 +1,5 @@
 import postgres from 'postgres'
+// Database configuration
 
 const sql = postgres({
     host                 : '172.27.27.196',            // Postgres ip address[s] or domain name[s]

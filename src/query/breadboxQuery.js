@@ -14,7 +14,7 @@ const queryInsertBreadBox = async ({ name, price, quantity, description }) => {
 
 
 const queryAllBreadBoxes = async () => {
-  // Get all Bread Boxes records
+  // Retrieve all Bread Boxes records
   const boxes = await sql`
     SELECT bread_box_id, name, price, quantity, description
     FROM bread_boxes;
@@ -35,7 +35,7 @@ const queryInsertImageBreadBox = async ({ filename, filepath, mimetype, size, br
 };
 
 const queryBreadBoxImages = async ({ bread_box_id }) => {
-  // Get all images of a Bread Box
+  // Retrieve all images of a Bread Box
   const images = await sql`
     SELECT bread_image_id, filename, filepath, mimetype, size
     FROM bread_images
@@ -44,13 +44,5 @@ const queryBreadBoxImages = async ({ bread_box_id }) => {
   return images;
 };
 
-
-const queryCreateOrder = async ({ user_id, name, address, phone, payment }) => {
-  //Create a new order with status 'Generado'
-  const order = await sql`
-  INSERT INTO orders(
-    user_id, name, date, address, phone, payment, status)
-    VALUES (${user_id}, ${name}, ${Date.toString()}, ${address}, ${phone}, ${payment}, Generado);`
-}
 
 export { queryAllBreadBoxes, queryInsertBreadBox, queryInsertImageBreadBox, queryBreadBoxImages }

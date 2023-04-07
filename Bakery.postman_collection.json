@@ -1,0 +1,227 @@
+{
+	"info": {
+		"_postman_id": "c66bc771-ac70-4e66-bd4f-d15caf0940d4",
+		"name": "Bakery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Bread Boxes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNocmlzdGlhbjE0IiwiaWF0IjoxNjgwODc5MjIyLCJleHAiOjE2ODM0NzEyMjJ9.aLTf75zi181LMSnAQKPaUYZTVhLu9dB1aJ3hwjSg4mg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"login_username\":\"christian14\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/breadbox/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"breadbox",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create BreadBox",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/api/cajaspan/createcaja?nombre=Caja 1&precio=12.32&cantidad=13&descripcion=Caja Amarilla",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"cajaspan",
+						"createcaja"
+					],
+					"query": [
+						{
+							"key": "nombre",
+							"value": "Caja 1",
+							"description": "Carlos"
+						},
+						{
+							"key": "precio",
+							"value": "12.32"
+						},
+						{
+							"key": "cantidad",
+							"value": "13"
+						},
+						{
+							"key": "descripcion",
+							"value": "Caja Amarilla"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Image BreadBox",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get BreadBox Images",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImNocmlzdGlhbjE0IiwiaWF0IjoxNjgwODc5MjIyLCJleHAiOjE2ODM0NzEyMjJ9.aLTf75zi181LMSnAQKPaUYZTVhLu9dB1aJ3hwjSg4mg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"pedro\",\r\n    \"name\": \"Pedro\",\r\n    \"last_name\": \"Morocho\",\r\n    \"password\": \"12345678\",\r\n    \"type\": \"Cliente\",\r\n    \"login_username\":\"christian14\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/user/create",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\":\"1\",\r\n    \"name\": \"Pedro Morocho\",\r\n    \"address\": \"Tarqui\",\r\n    \"phone\": \"0969031651\",\r\n    \"payment\": \"Efectivo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/order/create",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Order Detail",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"order_id\":2,\r\n    \"bread_box_id\": 3,\r\n    \"quantity\": 1,\r\n    \"login_username\": \"aaaaa\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/api/order/detail",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"order",
+						"detail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Orders",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Details Order",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
