@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS public.bread_boxes
 (
     bread_box_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
-    price NUMERIC(2) NOT NULL,
+    price DOUBLE PRECISION NOT NULL,
     quantity INTEGER NOT NULL,
     description VARCHAR(250)
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS public.orders
     address VARCHAR(200) NOT NULL,
     phone VARCHAR(15),
     payment VARCHAR(15) NOT NULL,
-    total NUMERIC(2),
+    total DOUBLE PRECISION,
     status VARCHAR(15) NOT NULL
     
 );

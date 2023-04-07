@@ -9,7 +9,7 @@ const queryCreateOrder = async ({ user_id, name, address, phone, payment }) => {
   INSERT INTO orders(
     user_id, name, date, address, phone, payment, total, status)
     VALUES (${user_id}, ${name}, ${now_date}, ${address}, ${phone}, ${payment}, 0, 'Generado')
-    returning order_id, user_id, name, date, address, phone, payment, status`
+    returning order_id, user_id, name, date, address, phone, payment, total, status`
   return order;
 }
 
@@ -20,51 +20,53 @@ const queryDetailOrder = async ({ order_id, bread_box_id, quantity }) => {
     order_id, bread_box_id, quantity)
     VALUES (${order_id}, ${bread_box_id}, ${quantity})
     returning order_detail_id, order_id, bread_box_id, quantity`
-  
-    // UPDATE public.orders
-    // SET order_id=?, user_id=?, name=?, date=?, address=?, phone=?, payment=?, status=?
-    // WHERE <condition>;
 
-  //   await sql`
-  // INSERT INTO orders(
-  //   order_id, bread_box_id, quantity)
-  //   VALUES (${order_id}, ${bread_box_id}, ${quantity})
-  //   returning order_detail_id, order_id, bread_box_id, quantity` 
+  const order_details = await sql`
+    SELECT bread_box_id, quantity
+    FROM order_details
+    WHERE order_id = ${order_id};
+  `
+  var total = 0;
+  for (const item of order_details) {
+    const bread_box = await sql`
+      SELECT price
+      FROM bread_boxes
+      WHERE bread_box_id = ${item.bread_box_id}
+    `
+
+    total += bread_box[0].price * item.quantity;
+
+  }
+
+  await sql`
+  UPDATE orders
+  SET  total=${(Math.round(total * 100) / 100).toFixed(2)}
+  WHERE order_id = ${order_id};
+`
+ 
   return order;
 }
 
 const queryAllOrders = async () => {
   // Get all Bread Boxes records
-  const boxes = await sql`
-    SELECT order_id, user_id, name, date, address, phone, payment, status
+  const orders = await sql`
+    SELECT order_id, user_id, name, date, address, phone, payment, total, status
     FROM orders
     `
-  return boxes;
+  return orders;
 };
 
 
 const queryAllGeneratedOrders = async () => {
   // Get all Bread Boxes records
-  const boxes = await sql`
-    SELECT order_id, user_id, name, date, address, phone, payment, status
+  const orders = await sql`
+    SELECT order_id, user_id, name, date, address, phone, payment, total, status
     FROM orders
-    WHERE status = "Generada"
+    WHERE status = 'Generado';
     `
-  return boxes;
-};
-
-
-const queryDeliverOrder = async () => {
-  // Get all Bread Boxes records
-  const boxes = await sql`
-    SELECT order_id, user_id, name, date, address, phone, payment, status
-    FROM orders
-    WHERE status = "Generada"
-    `
-  return boxes;
+  return orders;
 };
 
 
 
-
-export { queryCreateOrder, queryDetailOrder }
+export { queryCreateOrder, queryDetailOrder, queryAllOrders, queryAllGeneratedOrders }

@@ -1,5 +1,5 @@
 import e from "express";
-import { queryCreateOrder, queryDetailOrder } from "../query/ordersQuery.js";
+import { queryCreateOrder, queryDetailOrder, queryAllOrders, queryAllGeneratedOrders } from "../query/ordersQuery.js";
 
 const createOrder = async (request, response) => {
   try {
@@ -41,21 +41,25 @@ const getAllOrders = async (request, response) => {
     const user = request.body.user
 
     if(user == "Administrador"){
-
+      const orders = await queryAllOrders();
+      if (orders.count == 0) {
+        return response.status(404).json({ message: 'Orders not found' });
+      }
+      response.json(orders);
 
     }else if(user == "Delivery"){
-      
+      const orders = await queryAllGeneratedOrders();
+      if (orders.count == 0) {
+        return response.status(404).json({ message: 'Orders not found' });
+      }
+      response.json(orders);
 
     }
-    const boxes = await queryAllBreadBoxes();
-    if (boxes.count == 0) {
-      return response.status(404).json({ message: 'Boxes not found' });
-    }
-    response.json(boxes);
+    
   } catch (error) {
     response.status(500).json({ message: error.message });
   }
 };
 
 
-export { createOrder, createOrderDetail };
+export { createOrder, createOrderDetail, getAllOrders };
